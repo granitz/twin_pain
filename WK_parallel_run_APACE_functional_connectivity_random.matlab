@@ -26,14 +26,19 @@ mask = '';
 ACEfit_Par.Model     = 'ACE';             % Choose a model (AE or ACE) for
                                           % data fitting.
 
+% map zygocity to random num. Permutation keeps twin-pair links.
+random_nums = randperm(123);
+mID = unique(zyg.MotherID);
+e = changem(zyg.MotherID, random_nums, mID);
+e(1:3) %
+
+% load data
 A = load('~/wFC_csp_US_vs_csp_noUS.mat'); % load connectivity matrix (node x node x subject)
 A=A.net;
 A=reshape(A,[160000,246]);
 
 % permute participants
-nsize = size(A,2); % num participants
-perm = randsample(1:nsize,nsize);
-Aperm = A(:,perm);
+Aperm = A(:,e);
 
 ACEfit_Par.P_nm      = Aperm; % fullfile(base,conn_paths);
                                           % A list of images or other data
